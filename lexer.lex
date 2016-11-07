@@ -76,7 +76,7 @@ else 					{addLexeme(LOperator);}
 
 [*][*]					{addLexeme("power_operator");}
 
-\/\/.*					{if (filterEnabled) addLexeme(LComment);}
+\/\/.*					{if (!filterEnabled) addLexeme(LComment);}
 [(][*]((([^*])*([^)])*)|((([^*])*([^)])*[*][^)]+[)]([^*])*([^)])*))*)[*][)]		{
 	int startLine = numOflines;
 	int startSym = currPos;
@@ -94,7 +94,7 @@ else 					{addLexeme(LOperator);}
 		}
 	}
 
-	if (filterEnabled) 
+	if (!filterEnabled) 
 	{
 		//printf("multiline_comment(%s, %i, %i, %i, %i); ", yytext, startLine, numOflines, startSym, endSym);
 		addMultilineCommentLexeme("multiline_comment", startLine, numOflines, startSym, endSym);
@@ -123,7 +123,7 @@ main(int argc, char *argv[])
 {
 	filterEnabled = false;	
 
-	if (argc < 2 || argc > 3) {printf("Usage: <./a.out> <source file> <flag> \n"); exit(0);}
+	if (argc < 2 || argc > 3) {printf("Usage: <./a.out> <source file> [<flag>] \n"); exit(0);}
 
 	int i;
     for (i = 1; i < argc; ++i)
